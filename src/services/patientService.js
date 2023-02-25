@@ -44,24 +44,89 @@ let postBookAppointment = (data) => {
                 });
                 // console.log('check user: ', user[0])
                 //create a booking record
+                // if (user && user[0]) {
+                //     await db.Booking.findOrCreate({
+                //         where: {
+                //             patientId: user[0].id,
+                //         },
+                //         defaults: {
+                //             statusId: 'S1',
+                //             doctorId: data.doctorId,
+                //             patientId: user[0].id,
+                //             date: data.date,
+                //             timeType: data.timeType,
+                //             token: token
+                //         }
+                //     })
+                // }
+
                 if (user && user[0]) {
-                    await db.Booking.findOrCreate({
-                        where: { patientId: user[0].id },
-                        defaults: {
+                    let findUser = await db.Booking.findOne({
+                        where: {
+                            patientId: user[0].id
+                        },
+                        // raw: false
+                    })
+                    let findDate = await db.Booking.findOne({
+                        where: {
+                            date: data.date
+                        },
+                        // raw: false
+                    })
+                    if (!findUser || !findDate) {
+                        await db.Booking.create({
                             statusId: 'S1',
                             doctorId: data.doctorId,
                             patientId: user[0].id,
                             date: data.date,
                             timeType: data.timeType,
                             token: token
-                        }
-                    })
+                        });
+
+                        resolve({
+                            errCode: 0,
+                            errMessage: 'Booking appointment succeed!'
+                        })
+                        // } if (findUser && !findDate) {
+                        //     await db.Booking.create({
+                        //         statusId: 'S1',
+                        //         doctorId: data.doctorId,
+                        //         patientId: user[0].id,
+                        //         date: data.date,
+                        //         timeType: data.timeType,
+                        //         token: token
+                        //     });
+
+                        //     resolve({
+                        //         errCode: 0,
+                        //         errMessage: 'Booking appointment succeed!'
+                        //     })
+                        // } if (!findUser && !findDate) {
+                        //     await db.Booking.create({
+                        //         statusId: 'S1',
+                        //         doctorId: data.doctorId,
+                        //         patientId: user[0].id,
+                        //         date: data.date,
+                        //         timeType: data.timeType,
+                        //         token: token
+                        //     });
+
+                        //     resolve({
+                        //         errCode: 0,
+                        //         errMessage: 'Booking appointment succeed!'
+                        //     })
+                    } else {
+                        resolve({
+                            errCode: 2,
+                            errMessage: 'Appointment has been booked on this day or does not exist!'
+                        })
+                    }
                 }
 
-                resolve({
-                    errCode: 0,
-                    errMessage: 'Save info patient succed!'
-                })
+                // resolve({
+                //     errCode: 0,
+                //     errMessage: 'Save info patient succed!'
+                // })
             }
 
         } catch (e) {
