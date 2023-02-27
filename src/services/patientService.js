@@ -64,14 +64,12 @@ let postBookAppointment = (data) => {
                     let findUser = await db.Booking.findOne({
                         where: {
                             patientId: user[0].id
-                        },
-                        // raw: false
+                        }
                     })
                     let findDate = await db.Booking.findOne({
                         where: {
                             date: data.date
-                        },
-                        // raw: false
+                        }
                     })
                     if (!findUser || !findDate) {
                         await db.Booking.create({
