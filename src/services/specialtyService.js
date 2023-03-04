@@ -3,7 +3,7 @@ const db = require("../models")
 let createSpecialty = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.name || !data.imageBase64 || !data.descriptionHTML
+            if (!data.name || !data.image || !data.descriptionHTML
                 || !data.descriptionMarkdown
             ) {
                 resolve({
@@ -13,7 +13,7 @@ let createSpecialty = (data) => {
             } else {
                 await db.Specialty.create({
                     name: data.name,
-                    image: data.imageBase64,
+                    image: data.image,
                     descriptionHTML: data.descriptionHTML,
                     descriptionMarkdown: data.descriptionMarkdown
                 })
