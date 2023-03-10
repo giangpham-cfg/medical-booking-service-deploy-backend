@@ -47,7 +47,7 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-clinic', clinicController.handleEditClinic);
     router.delete('/api/delete-clinic', clinicController.handleDeleteClinic);
     router.get('/api/get-clinic', clinicController.getAllClinic);
-    // router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
+    router.get('/api/get-detail-clinic-by-id', clinicController.getDetailClinicById);
     return app.use("/", router);
 }
 

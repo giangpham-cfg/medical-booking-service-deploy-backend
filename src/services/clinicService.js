@@ -114,59 +114,50 @@ let deleteClinic = (clinicId) => {
     })
 }
 
-// let getDetailClinicById = (inputId, location) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             if (!inputId || !location) {
-//                 resolve({
-//                     errCode: 1,
-//                     errMessage: 'Missing parameter'
-//                 })
-//             } else {
-//                 let data = await db.Clinic.findOne({
-//                     where: {
-//                         id: inputId
-//                     },
-//                     attributes: ['descriptionHTML', 'descriptionMarkdown'],
-//                 })
+let getDetailClinicById = (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let data = await db.Clinic.findOne({
+                    where: {
+                        id: inputId
+                    },
+                    attributes: ['descriptionHTML', 'descriptionMarkdown', 'name', 'address'],
+                })
 
-//                 if (data) {
-//                     let doctorClinic = [];
-//                     if (location === 'ALL') {
-//                         doctorClinic = await db.Doctor_Info.findAll({
-//                             where: { clinicId: inputId },
-//                             attributes: ['doctorId', 'provinceId'],
-//                         })
-//                     } else {
-//                         //find by location
-//                         doctorClinic = await db.Doctor_Info.findAll({
-//                             where: {
-//                                 clinicId: inputId,
-//                                 provinceId: location
-//                             },
-//                             attributes: ['doctorId', 'provinceId'],
-//                         })
-//                     }
+                if (data) {
+                    let doctorClinic = [];
 
-//                     data.doctorClinic = doctorClinic;
-//                 } else data = {}
+                    doctorClinic = await db.Doctor_Info.findAll({
+                        where: { clinicId: inputId },
+                        attributes: ['doctorId', 'provinceId'],
+                    })
 
-//                 resolve({
-//                     errCode: 0,
-//                     errMessage: 'Ok',
-//                     data
-//                 })
-//             }
-//         } catch (e) {
-//             reject(e)
-//         }
-//     })
-// }
+
+                    data.doctorClinic = doctorClinic;
+                } else data = {}
+
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Ok',
+                    data
+                })
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
 
 module.exports = {
     createClinic: createClinic,
     getAllClinic: getAllClinic,
     updateClinicData: updateClinicData,
     deleteClinic: deleteClinic,
-    // getDetailClinicById: getDetailClinicById,
+    getDetailClinicById: getDetailClinicById,
 }
