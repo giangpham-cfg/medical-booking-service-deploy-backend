@@ -17,7 +17,13 @@ let getTopDoctorHome = (limitInput) => {
                 },
                 include: [
                     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
-                    { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                    { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
+                    {
+                        model: db.Doctor_Info, attributes: ['specialtyId'],
+                        include: [
+                            { model: db.Specialty, as: 'specialtyData', attributes: ['name'] }
+                        ]
+                    }
                 ],
                 raw: true,
                 nest: true
@@ -225,7 +231,7 @@ let bulkCreateSchedule = (data) => {
                 })
             } else {
                 let schedule = data.arrSchedule;
-                // console.log('check data send: ', schedule)
+                console.log('check data send: ', schedule)
                 if (schedule && schedule.length > 0) {
                     schedule = schedule.map(item => {
                         item.maxNumber = MAX_NUMBER_SCHEDULE;
@@ -236,7 +242,7 @@ let bulkCreateSchedule = (data) => {
                 //get all existing data
                 let existing = await db.Schedule.findAll(
                     {
-                        where: { doctorId: data.doctorId, date: data.formatedDate },
+                        where: { doctorId: data.doctorId, date: data.formatedDate.toString() },
                         attributes: ['timeType', 'date', 'doctorId', 'maxNumber'],
                         raw: true
                     }
