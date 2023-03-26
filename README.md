@@ -1,7 +1,6 @@
 # medical-booking-service-fullstackproject
 A fullstack project with SERN (SQL, Express.js, React.js and Node.js)
 
-*--------------------------------First 2 weeks------------------------------*
 - Install Node.js enviroment. Start platform Node.js with javascript
 - Start with Express framework - "Hello world" with Node.js
 - Apply the MVC model into the project
